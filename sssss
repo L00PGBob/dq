@@ -3,18 +3,15 @@ getgenv().startkr = true;
 
 
 
-
-
-wait(2.5)
 spawn(function()
 while party == true do
 local args = {[2] = true}
 game:GetService("ReplicatedStorage").remotes.loadPlayerCharacter:FireServer(unpack(args))
 
-local args = {[1] = "Desert Temple"}
+local args = {[1] = "Winter Outpost"}
 game:GetService("ReplicatedStorage").remotes.getDungeonStats:InvokeServer(unpack(args))
 
-local args = {[1] = "Desert Temple",[2] = "Nightmare",[3] = 0,[4] = true,[5] = false,[6] = false}
+local args = {[1] = "Winter Outpost",[2] = "Easy",[3] = 0,[4] = true,[5] = false,[6] = false}
 game:GetService("ReplicatedStorage").remotes.createLobby:InvokeServer(unpack(args))
 
 game:GetService("ReplicatedStorage").remotes.startDungeon:FireServer()
@@ -29,14 +26,26 @@ end)
 spawn(function()
 while startkr == true do
 game:GetService("ReplicatedStorage").remotes.changeStartValue:FireServer()
-local Player = game.Players.LocalPlayer
-Player.Character.Humanoid.WalkSpeed = 120
-Player.Character.Humanoid.HipHeight = 7;
-while wait(0.2) do
+local p = game.Players.LocalPlayer
+local c = getconnections(p.Character.Humanoid:GetPropertyChangedSignal("WalkSpeed"))
+for i,v in pairs(c) do
+    v:Disable()
+end
+local walkSpeed = 32
+local gmt = getrawmetatable(game)
+setreadonly(gmt, false)
+local oldindex = gmt.__index
+gmt.__index = newcclosure(function(self,b)
+if b == "WalkSpeed" then
+return 16
+end
+return oldindex(self,b)
+end)
+
+game:GetService("Players").LocalPlayer.Character.Humanoid.WalkSpeed = walkSpeed
 for index, value in next, workspace:GetDescendants() do
 if (value:FindFirstChildOfClass("Humanoid") and value ~= Player.Character) then
 value.Humanoid.Health = 0
-end
 end
 end
 end
