@@ -31,7 +31,7 @@ local c = getconnections(p.Character.Humanoid:GetPropertyChangedSignal("WalkSpee
 for i,v in pairs(c) do
     v:Disable()
 end
-local walkSpeed = 32
+local walkSpeed = 50
 local gmt = getrawmetatable(game)
 setreadonly(gmt, false)
 local oldindex = gmt.__index
@@ -41,12 +41,14 @@ return 16
 end
 return oldindex(self,b)
 end)
-
 game:GetService("Players").LocalPlayer.Character.Humanoid.WalkSpeed = walkSpeed
+end
+end)
+
+spawn(function()
 for index, value in next, workspace:GetDescendants() do
 if (value:FindFirstChildOfClass("Humanoid") and value ~= Player.Character) then
 value.Humanoid.Health = 0
-end
 end
 end
 end)
