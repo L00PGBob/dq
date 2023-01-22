@@ -1,0 +1,43 @@
+getgenv().party = true;
+getgenv().startkr = true;
+
+
+
+
+
+wait(2.5)
+spawn(function()
+while party == true do
+local args = {[2] = true}
+game:GetService("ReplicatedStorage").remotes.loadPlayerCharacter:FireServer(unpack(args))
+
+local args = {[1] = "Desert Temple"}
+game:GetService("ReplicatedStorage").remotes.getDungeonStats:InvokeServer(unpack(args))
+
+local args = {[1] = "Desert Temple",[2] = "Nightmare",[3] = 0,[4] = true,[5] = false,[6] = false}
+game:GetService("ReplicatedStorage").remotes.createLobby:InvokeServer(unpack(args))
+
+game:GetService("ReplicatedStorage").remotes.startDungeon:FireServer()
+end
+end)
+
+
+
+
+
+
+spawn(function()
+while startkr == true do
+game:GetService("ReplicatedStorage").remotes.changeStartValue:FireServer()
+local Player = game.Players.LocalPlayer
+Player.Character.Humanoid.WalkSpeed = 120
+Player.Character.Humanoid.HipHeight = 7;
+while wait(0.2) do
+for index, value in next, workspace:GetDescendants() do
+if (value:FindFirstChildOfClass("Humanoid") and value ~= Player.Character) then
+value.Humanoid.Health = 0
+end
+end
+end
+end
+end)
