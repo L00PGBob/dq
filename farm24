@@ -41,11 +41,12 @@ return 16
 end
 return oldindex(self,b)
 end)
-game:GetService("Players").LocalPlayer.Character.Humanoid.WalkSpeed = walkSpeed
+
 end
 end)
 
 spawn(function()
+game:GetService("Players").LocalPlayer.Character.Humanoid.WalkSpeed = walkSpeed
 for index, value in next, workspace:GetDescendants() do
 if (value:FindFirstChildOfClass("Humanoid") and value ~= Player.Character) then
 value.Humanoid.Health = 0
